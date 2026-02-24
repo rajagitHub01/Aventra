@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ package.title }}</title>
+</head>
+<body>
+
+<h1>{{ package.title }}</h1>
+
+{% if package.image %}
+<img src="{{ package.image.url }}" width="500px">
+{% endif %}
+
+<p><strong>Location:</strong> {{ package.location }}</p>
+<p><strong>Price:</strong> ₹{{ package.price }}</p>
+<p><strong>Duration:</strong> {{ package.duration }}</p>
+
+<p>{{ package.description }}</p>
+
+<button>Book Now</button>
+
+<br><br>
+<a href="/">Back to Home</a>
+
+</body>
+</html>
