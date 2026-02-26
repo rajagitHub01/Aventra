@@ -19,11 +19,17 @@ from django.urls import path
 from travel import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home ,name = 'home_page'),
+    path('', views.index ,name = 'home_page'),
     path('package/<int:id>/', views.package_detail, name='package_detail'),
+    path('register/', views.register, name = 'register'),
+
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
+    path("home/", views.home, name="home"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

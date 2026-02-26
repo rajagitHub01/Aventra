@@ -1,0 +1,28 @@
+<h2>Home Page</h2>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }} </p>
+    <a href="{% url 'logout' %}">Logout</a>
+
+    <h1>Available packages</h1>
+    {% for package in packages%}
+    <a href="{% url 'package_detail' package.id %}" style="text-decoration:none; color:black;">
+    <div style="border:1px solid black; padding:10px; margin:10px;">
+        <!-- IMAGE -->
+        <img src="{{ package.image.url }}" width="100%" height="200px" style="object-fit:cover;">
+
+        <h2>{{package.title}}</h2>
+        <p>Location: {{package.location}}</p>
+        <p>Price: {{package.price}}</p>
+        <p>Duration: {{package.duration}}</p>
+        <p>{{ package.description|truncatewords:15 }}</p>
+    </div>
+    </a>
+    {% endfor %}
+
+    
+{% else %}
+    <p>You are not logged in.</p>
+    <a href="{% url 'login' %}">Login</a>
+{% endif %}
+

@@ -1,26 +1,57 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Home page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventra | Explore. Experience. Travel.</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
+
+    <header class="navbar">
+        <div class="logo-container">
+            <a href="/">
+                <img src="{% static 'images/aventra-logo-transparent.png' %}" alt="Aventra Logo" class="logo-img">
+                <span class="logo-text">AVENTRA</span>
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#destinations">Destinations</a>
+            <a href="#tours">Tours</a>
+            <a href="#activities">Activities</a>
+            <a href="#about">About Us</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="#login" class="login-btn">Log In</a>
+            <a href="#signup" class="signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+
     <h1>Available packages</h1>
     {% for package in packages%}
     <a href="{% url 'package_detail' package.id %}" style="text-decoration:none; color:black;">
-    <div style="border:1px solid black; padding:10px; margin:10px;">
-        <!-- IMAGE -->
-        <img src="{{ package.image.url }}" width="100%" height="200px" style="object-fit:cover;">
+        <div style="border:1px solid black; padding:10px; margin:10px;">
+            <!-- IMAGE -->
+            <img src="{{ package.image.url }}" width="100%" height="200px" style="object-fit:cover;">
 
-        <h2>{{package.title}}</h2>
-        <p>Location: {{package.location}}</p>
-        <p>Price: {{package.price}}</p>
-        <p>Duration: {{package.duration}}</p>
-        <p>{{ package.description|truncatewords:15 }}</p>
-    </div>
+            <h2>{{package.title}}</h2>
+            <p>Location: {{package.location}}</p>
+            <p>Price: {{package.price}}</p>
+            <p>Duration: {{package.duration}}</p>
+            <p>{{ package.description|truncatewords:15 }}</p>
+        </div>
     </a>
     {% endfor %}
+
+
 </body>
 
 </html>
