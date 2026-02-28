@@ -1,0 +1,188 @@
+/* ===== HEADER BASE ===== */
+.premium-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 70px;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* LEFT */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.brand img {
+    height: 40px;
+    width: auto;
+  
+}
+
+.brand span {
+    font-family: 'Manrope', sans-serif;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #183e35;
+}
+
+
+/* CENTER SEARCH */
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+
+/* SEARCH CONTAINER */
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 480px;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    background: #f8fafc;
+    overflow: hidden;
+    padding: 4px 8px 4px 4px; 
+    margin-left: 20px;
+
+
+    
+    
+}
+
+
+
+.search-container input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: transparent;
+
+    border-radius: 50px;
+    
+}
+
+/* Airbnb-style circular search button */
+.search-btn {
+    height: 42px;
+    width: 42px;
+    border-radius: 50%;
+    border: none;
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.search-btn:hover {
+    background: rgb(60, 60, 60);
+}
+
+.search-container:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* RIGHT */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;   
+}
+
+.helpline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #0f172a;
+}
+
+.helpline i {
+    color: #ff385c;  /* or your brand color */
+}
+
+.helpline-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.helpline-text small {
+    font-size: 11px;
+    color: #64748b;   /* soft gray */
+    letter-spacing: 0.5px;
+}
+
+/* .helpline-text span {
+    font-weight: 600;
+    font-size: 13px;
+} */
+
+.helpline-text span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+
+.agent-link {
+    font-size: 13px;
+    text-decoration: none;
+    color: #334155;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.agent-link:hover {
+    color: #000000;
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.login-link {
+    text-decoration: none;
+    font-size: 14px;
+    color: #0f172a;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.login-link:hover {
+    color: rgb(106, 144, 104);
+}
+
+ .signup-btn {
+    text-decoration: none;
+    background: #111827;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.signup-btn:hover {
+    background: #000;
+}
+

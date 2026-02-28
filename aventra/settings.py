@@ -132,5 +132,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # to tell Django to look in a global 'static' folder
 STATICFILES_DIRS = [
-    BASE_DIR / "static", 
+    os.path.join(BASE_DIR, 'static'),
 ]
