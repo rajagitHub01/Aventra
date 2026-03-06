@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Package, Profile
+from .models import Package, Profile, Review
 from django.contrib import messages
 
 # Create your views here.
 
 def index(request):
     packages = Package.objects.all()
-    return render(request, 'index.html', {'packages': packages})
+    reviews = Review.objects.all().order_by('-id')[:6]       # latest 6 reviews
+    return render(request, 'index.html', {'packages': packages, 'reviews': reviews})
 
 
 # logical part

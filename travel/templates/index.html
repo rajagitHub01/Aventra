@@ -7,9 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventra | Explore. Experience. Travel.</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -39,7 +41,7 @@
                 <i class="fa-solid fa-phone-volume fa-lg"></i>
                 <div class="helpline-text">
                     <small>Call Us</small>
-                    <span>+91 98765 43210</span>
+                    <span>+91 12345 67890</span>
                 </div>
             </div>
 
@@ -54,6 +56,22 @@
 
     </header>
 
+    <section class="hero-section">
+        <div class="hero-center-text">
+            <h1>Explore The World With Aventra</h1>
+            <p>Your journey begins here.</p>
+        </div>
+
+        <div class="hero-reviews">
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"{{ review.comment }}"</p>
+                <span class="review-user">- {{ review.user}}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
 
 

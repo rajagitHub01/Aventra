@@ -20,6 +20,8 @@ class Package(models.Model):
     description = models.CharField(max_length = 150)
     image = models.ImageField(upload_to = 'packages/')
     created_at = models.DateTimeField(auto_now_add = True)
+    def __str__(self):
+        return self.title
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
