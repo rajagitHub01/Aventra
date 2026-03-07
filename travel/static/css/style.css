@@ -197,51 +197,42 @@ body {
 /* Heo section (image)-----------------------------------------------------------------------------------------------------> */
 
 .hero-section {
-    height: 60vh;
+    height: 57vh;
 
     background-image: url("/static/images/hero.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
     border-radius: 60px;
     margin: 30px;
 }
 
-/* Center Text */
 .hero-center-text {
     position: relative;
     text-align: center;
     color: white;
     z-index: 3;
-
     max-width: 700px;
-
 }
 
 .hero-center-text h1 {
     font-size: 56px;
     font-weight: 700;
     line-height: 1.3;
-
-    /* Premium gradient text */
     background: linear-gradient(90deg,#0f172a,#2563eb,#0f172a);
-
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     margin-bottom: 15px;
 }
 
 .hero-center-text p {
     font-size: 20px;
-    color: #f3f5f8;
+    color: #380507;
     line-height: 1.7;
 }
 
@@ -251,13 +242,15 @@ body {
     right: 30px;
     top: 50%;
     transform: translateY(-50%);
+    overflow: hidden;
+    height: 320px;
+}
 
-    /* o */
+.reviews-track{
     display: flex;
     flex-direction: column;
     gap: 16px;
-
-    animation: scrollReviews 20s linear infinite;
+    animation: scrollReviews 17s linear infinite;
 }
 
 @keyframes scrollReviews {
@@ -276,16 +269,11 @@ body {
 .review-card {
     padding: 18px 22px;
     margin-bottom: 16px;
-
     border-radius: 18px;
-
     background: rgba(255,255,255,0.25);
-
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-
     border: 1px solid rgba(255,255,255,0.35);
-
     box-shadow: 0 15px 35px rgba(0,0,0,0.08);
 }
 
@@ -304,18 +292,14 @@ body {
 .review-text{
     font-size: 15px;
     color: #1f2937;
-
     line-height: 1.6;
-
     margin: 6px 0;
 }
 
 .review-user{
     font-size: 13px;
     font-weight: 600;
-
     color: #374151;
-
     margin-top: 8px;
 }
 
@@ -327,7 +311,6 @@ body {
     inset: 0;
     pointer-events: none;
     border-radius: 30px;
-
     background:
         /* left fade */
         linear-gradient(to right, #f6f7fb 0%, rgba(246, 247, 251, 0) 8%),
@@ -346,4 +329,189 @@ body {
         radial-gradient(circle at top right, #f6f7fb 0%, rgba(246, 247, 251, 0) 30%),
         radial-gradient(circle at bottom left, #f6f7fb 0%, rgba(246, 247, 251, 0) 15%),
         radial-gradient(circle at bottom right, #f6f7fb 0%, rgba(246, 247, 251, 0) 15%);
+}
+
+/* package section --------------------------------------------------------------------------------------------------> */
+.package-section{
+    /* padding:120px 10%; */
+    background:#fafafa;
+    text-align:center;
+}
+
+/* title */
+
+.package-title{
+    font-size:52px;
+    font-weight:700;
+    letter-spacing:-1px;
+    margin-bottom:15px;
+}
+
+/* divider */
+
+.divider{
+    width:80px;
+    height:3px;
+    background:linear-gradient(90deg,#4f6df5,#8fa2ff);
+    margin:20px auto;
+    border-radius:5px;
+}
+
+/* subtitle */
+
+/* .package-subtitle{
+    max-width:650px;
+    margin:auto;
+    color:#666;
+    font-size:17px;
+    line-height:1.6;
+} */
+
+/* tabs */
+
+.package-tabs{
+    margin-top:45px;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+}
+
+/* tab button */
+
+.tab-btn{
+    border:none;
+    background:white;
+    padding:14px 32px;
+    font-size:15px;
+    border-radius:30px;
+    cursor:pointer;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    transition:all 0.35s ease;
+}
+
+/* hover */
+
+.tab-btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* active */
+
+.tab-btn.active{
+    background:linear-gradient(135deg,#4f6df5,#6f8cff);
+    color:white;
+}
+
+.typing-container{
+    display:inline-block;
+    width:140px;   
+    text-align:left;
+}
+
+.package-title{
+    font-size:28px;
+}
+
+/* static text */
+
+.static-text{
+    font-size:22px;        /* smaller than animation text */
+    font-weight:400;       /* not bold */
+    color:#555;
+    letter-spacing:0.5px;
+    margin-right:6px;
+    font-family: "Poppins", sans-serif;
+}
+
+/* animated text */
+
+#typing-text{
+    font-size:28px;
+    font-weight:600;
+    color:#cd760b;
+}
+
+/* cursor */
+
+.cursor{
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    0%,100%{opacity:1;}
+    50%{opacity:0;}
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* domestic and international package card */
+
+.tab-btn{
+
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#e5e7eb;
+cursor:pointer;
+font-weight:600;
+
+}
+
+.tab-btn.active{
+
+background:#2563eb;
+color:white;
+
+}
+
+.package-container{
+
+display:none;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+
+}
+
+.package-container.active{
+
+display:grid;
+
+}
+
+.package-card{
+
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+transition:0.3s;
+
+}
+
+.package-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.package-card img{
+
+width:100%;
+height:200px;
+object-fit:cover;
+
+}
+
+.package-info{
+
+padding:15px;
+
+}
+
+.price{
+
+color:#2563eb;
+font-weight:bold;
+
 }

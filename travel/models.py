@@ -13,12 +13,17 @@ class Profile(models.Model):
 
 
 class Package(models.Model):
+    PACKAGE_TYPE=[
+        ('domestic', 'Domestic'),
+        ('international', 'International')
+    ]
     title = models.CharField(max_length = 100)
     location = models.CharField(max_length = 50)
     price = models.IntegerField()
     duration = models.CharField(max_length = 100)
     description = models.CharField(max_length = 150)
     image = models.ImageField(upload_to = 'packages/')
+    package_type = models.CharField(max_length = 20, choices = PACKAGE_TYPE)
     created_at = models.DateTimeField(auto_now_add = True)
     def __str__(self):
         return self.title
