@@ -9,9 +9,14 @@ from django.contrib import messages
 def index(request):
     packages = Package.objects.all()
     reviews = Review.objects.all().order_by('-id')[:6]       # latest 6 reviews
-    domestic_package = Package.objects.filter(package_type = 'domestic'[:4])
-    international_package = Package.objects.filter(package_type = 'international'[:4])
-    return render(request, 'index.html', {'packages': packages, 'reviews': reviews, 'domestic_package': domestic_package, 'international_package':international_package})
+    domestic_package = Package.objects.filter(package_type = 'domestic')[:8]
+    international_package = Package.objects.filter(package_type = 'international')[:8]
+    return render(request, 'index.html', {
+        'packages': packages, 
+        'reviews': reviews, 
+        'domestic_package': domestic_package, 
+        'international_package':international_package
+        })
 
 
 # logical part

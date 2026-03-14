@@ -8,9 +8,10 @@
     <title>Aventra | Explore. Experience. Travel.</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=10">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
 
@@ -57,24 +58,53 @@
     </script>
     <script>
 
-function showPackages(type){
+        function showPackages(type) {
 
-    document.querySelectorAll('.package-container')
-    .forEach(container=>{
-        container.classList.remove('active');
-    });
+            document.querySelectorAll('.slider-section').forEach(section => {
+                section.classList.remove('active');
+            });
 
-    document.querySelectorAll('.tab-btn')
-    .forEach(btn=>{
-        btn.classList.remove('active');
-    });
+            document.getElementById(type + "-section").classList.add('active');
 
-    document.getElementById(type).classList.add('active');
-    event.target.classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-}
+            event.target.classList.add('active');
 
-</script>
+        }
+    </script>
+    <script>
+
+        function slideRight(containerId) {
+
+            const slider = document.getElementById(containerId);
+            const card = slider.querySelector('.package-card');
+
+            const cardWidth = card.offsetWidth + 18; // 12 = your gap
+
+            slider.scrollBy({
+                left: cardWidth,
+                behavior: "smooth"
+            });
+
+        }
+
+        function slideLeft(containerId) {
+
+            const slider = document.getElementById(containerId);
+            const card = slider.querySelector('.package-card');
+
+            const cardWidth = card.offsetWidth + 18;
+
+            slider.scrollBy({
+                left: -cardWidth,
+                behavior: "smooth"
+            });
+
+        }
+
+    </script>
 </head>
 
 <body>
@@ -182,63 +212,186 @@ function showPackages(type){
     </section>
 
     <!-- domestic and international packages card-------------------------------------------------------------------->
-     <div id="domestic" class="package-container active">
+    <div id="domestic-section" class="slider-section active">
+        <div class="slider-wrapper">
 
-    {% for package in domestic_package %}
+            <button class="slide-btn left" onclick="slideLeft('domestic')">&#10094;</button>
 
-    <div class="package-card">
+            <div id="domestic" class="package-container active">
 
-        <img src="{{ package.image.url }}">
+                {% for package in domestic_package %}
 
-        <div class="package-info">
+                <div class="package-card">
 
-            <h3>{{ package.title }}</h3>
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}" alt="{{ package.title }}">
 
-            <p>{{ package.duration }}</p>
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
 
-            <span class="price">₹{{ package.price }}</span>
+                    <div class="card-content">
+
+                        <h3 class="package-title">{{ package.title }}</h3>
+
+                        <p class="location">{{ package.location }}</p>
+
+                        <div class="features">
+                            ✈ Flights &nbsp;
+                            🏨 Hotels &nbsp;
+                            📸 Sightseeing
+                        </div>
+
+                        <div class="price-section">
+
+                            <div class="price">
+                                ₹{{ package.price }}
+                                <span>per person</span>
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Details
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('domestic')">&#10095;</button>
+
+        </div>
+    </div>
+
+
+
+
+    <div id="international-section" class="slider-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('international')">&#10094;</button>
+
+
+            <div id="international" class="package-container">
+
+                {% for package in international_package %}
+
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}" alt="{{ package.title }}">
+
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <h3 class="package-title">{{ package.title }}</h3>
+
+                        <p class="location">{{ package.location }}</p>
+
+                        <div class="features">
+                            ✈ Flights &nbsp;
+                            🏨 Hotels &nbsp;
+                            📸 Sightseeing
+                        </div>
+
+                        <div class="price-section">
+
+                            <div class="price">
+                                ₹{{ package.price }}
+                                <span>per person</span>
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('international')">&#10095;</button>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br><br><br><br>
+
+
+    <footer class="premium-footer">
+
+        <div class="footer-wrapper">
+
+            <h2 class="footer-brand">AVENTRA</h2>
+
+            <p class="footer-desc">
+                Curated travel experiences designed for explorers and dreamers.
+            </p>
+
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="#">Packages</a>
+                <a href="#">Destinations</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+
+            <p class="footer-copy">
+                © 2026 Aventra Travel
+            </p>
 
         </div>
 
-    </div>
-
-    {% endfor %}
-</div>
-
-
-<div id="international" class="package-container">
-
-    {% for package in international_package %}
-
-    <div class="package-card">
-
-        <img src="{{ package.image.url }}">
-
-        <div class="package-info">
-
-            <h3>{{ package.title }}</h3>
-
-            <p>{{ package.duration }} </p>
-
-            <span class="price">₹{{ package.price }}</span>
-
-        </div>
-
-    </div>
-
-    {% endfor %}
-
-</div>
-
-</section>
-
-
-
-
-
-
-    
-
+    </footer>
 </body>
 
 </html>
