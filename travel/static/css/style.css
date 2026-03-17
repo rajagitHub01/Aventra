@@ -432,14 +432,23 @@ body {
 
 /* title */
 
-.package-title {
-    font-size: 52px;
-    font-weight: 700;
-    letter-spacing: -1px;
-    margin-bottom: 15px;
-    margin-left: 90px;
-}
+.package-title{
+font-family:'Poppins', sans-serif;
+font-size:20px;
+font-weight:600;
+color:#1a1a1a;
 
+margin-bottom:6px;
+
+line-height:1.3;
+
+display:-webkit-box;
+-webkit-line-clamp:2;
+-webkit-box-orient:vertical;
+overflow:hidden;
+
+transition:all 0.3s ease;
+}
 /* divider */
 
 .divider {
@@ -573,7 +582,7 @@ body {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 12px;
+    gap: 10px;
     /* padding:0 75px; */
 }
 
@@ -592,8 +601,8 @@ display:grid;
     border-radius: 16px;
     border: 1px solid #e5e7eb;
     padding: 11px;
-    width: 280px;
-    min-width: 280px;
+    width: 380px;
+    min-width: 380px;
     flex-shrink: 0;
 }
 
@@ -610,12 +619,12 @@ display:grid;
 
 .card-image {
     position: relative;
-    height: 195px;
+    height: 220px;
 }
 
 .card-image img {
     width: 100%;
-    height: 200px;
+    height: 220px;
     object-fit: cover;
     border-radius: 12px;
 }
@@ -714,7 +723,7 @@ display:grid;
     display: flex;
     align-items: center;
     /* width: 100%; */
-    padding: 0 75px;
+    padding: 0 86px;
 }
 
 .package-container {
@@ -729,28 +738,213 @@ display:grid;
     display: none;
 }
 
-.package-card {
+/* .package-card {
     min-width: 280px;
     flex-shrink: 0;
+} */
+
+.slide-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+
+width:50px;
+height:50px;
+
+border-radius:50%;
+border:1px solid rgba(255,255,255,0.35);
+
+background:linear-gradient(
+145deg,
+rgba(255,255,255,0.25),
+rgba(255,255,255,0.05)
+);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+z-index:10;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.25),
+inset 0 1px 0 rgba(255,255,255,0.5);
+
+transition:all 0.35s ease;
 }
 
-.slide-btn {
-    position: absolute;
-    top: 45%;
-    background: #ff6b35;
-    color: white;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 10px 14px;
-    border-radius: 50%;
-    z-index: 10;
+.slide-btn:hover{
+
+transform:translateY(-50%) scale(1.12);
+
+background:linear-gradient(
+145deg,
+rgba(255,255,255,0.45),
+rgba(255,255,255,0.15)
+);
+
+box-shadow:
+0 18px 45px rgba(0,0,0,0.35),
+inset 0 2px 0 rgba(255,255,255,0.7);
 }
 
-.slide-btn.left {
-    left: -10px;
+.slide-btn:hover i{
+transform:scale(1.1);
 }
 
-.slide-btn.right {
-    right: -10px;
+.slide-btn i{
+font-size:22px;
+color:#111;
+transition:all 0.3s ease;
+}
+
+.slide-btn.left{
+left:40px;
+}
+
+.slide-btn.right{
+right:50px;
+}
+
+/* package card text ------------------------------------------------------------------------------------------- */
+.stay-route{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:6px;
+    margin-bottom:18px;
+    font-size:12.5px;
+    color:#555;
+}
+
+.route-icon{
+    font-size:13px;
+    color:#3b82f6;
+    margin-right:3px;
+}
+/* location */
+.route-stop{
+    font-weight:500;
+    color:#333;
+    letter-spacing:0.2px;
+}
+
+/* arrow */
+.route-arrow{
+    font-size:10px;
+    color:#b5b5b5;
+    display:flex;
+    align-items:center;
+}
+
+/* route icon */
+.stay-route i.fa-route{
+    color:#0a6cff;
+    margin-right:4px;
+}
+/* review-------------------------------------> */
+/* title row */
+.title-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:4px;
+}
+
+/* title */
+.package-title{
+font-size:18px;
+font-weight:600;
+color:#111;
+margin:0;
+}
+
+/* review box */
+.review-box{
+display:flex;
+align-items:center;
+gap:4px;
+font-size:13px;
+font-weight:500;
+}
+
+/* star */
+.review-box i{
+color:#f5a623;
+font-size:13px;
+}
+
+/* rating number */
+.rating{
+color:#222;
+}
+
+/* review count */
+.review-count{
+color:#777;
+font-size:12px;
+}
+/* ----------price--------------------------------- */
+
+.price-section{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:12px;
+}
+
+/* price container */
+.price-info{
+display:flex;
+flex-direction:column;
+}
+
+/* first row */
+.price-top{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:2px;
+}
+
+/* crossed price */
+.original-price{
+font-size:16px;
+color:#9a9a9a;
+text-decoration:line-through;
+}
+
+/* discount badge */
+.discount-badge{
+background:#e6e9cf;
+color:#1d893d;
+font-size:11px;
+font-weight:600;
+padding:3px 7px;
+border-radius:6px;
+}
+
+/* second row */
+.price-bottom{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+/* final price */
+.offer-price{
+font-size:22px;
+font-weight:700;
+color:#111;
+}
+
+/* per person */
+.per-person{
+font-size:12px;
+color:#777;
 }

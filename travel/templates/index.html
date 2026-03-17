@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +9,7 @@
     <title>Aventra | Explore. Experience. Travel.</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,7 +82,7 @@
             const slider = document.getElementById(containerId);
             const card = slider.querySelector('.package-card');
 
-            const cardWidth = card.offsetWidth + 18; // 12 = your gap
+            const cardWidth = card.offsetWidth + 23; // 12 = your gap
 
             slider.scrollBy({
                 left: cardWidth,
@@ -95,7 +96,7 @@
             const slider = document.getElementById(containerId);
             const card = slider.querySelector('.package-card');
 
-            const cardWidth = card.offsetWidth + 18;
+            const cardWidth = card.offsetWidth + 23;
 
             slider.scrollBy({
                 left: -cardWidth,
@@ -185,7 +186,7 @@
             <h2 class="package-title">
                 <span class="static-text">Top Destinations</span>
                 <span class="typing-container">
-                    <span id="typing-text"></span><span class="cursor">|</span>
+                    <span id="typing-text"></span><span class="cursor"></span>
                 </span>
             </h2>
 
@@ -215,7 +216,8 @@
     <div id="domestic-section" class="slider-section active">
         <div class="slider-wrapper">
 
-            <button class="slide-btn left" onclick="slideLeft('domestic')">&#10094;</button>
+            <button class="slide-btn left" onclick="slideLeft('domestic')"><i
+                    class="fa-solid fa-chevron-left"></i></button>
 
             <div id="domestic" class="package-container active">
 
@@ -234,26 +236,80 @@
 
                     <div class="card-content">
 
-                        <h3 class="package-title">{{ package.title }}</h3>
+                        <div class="title-row">
 
-                        <p class="location">{{ package.location }}</p>
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+
+                        </div>
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">
+                                {{ stay }}
+                            </span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- <p class="location">{{ package.location }}</p> -->
 
                         <div class="features">
-                            ✈ Flights &nbsp;
-                            🏨 Hotels &nbsp;
-                            📸 Sightseeing
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
                         </div>
 
                         <div class="price-section">
 
-                            <div class="price">
-                                ₹{{ package.price }}
-                                <span>per person</span>
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        ₹{{ package.price | intcomma }}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
                             </div>
 
                             <a href="{% url 'package_detail' package.id %}" class="details-btn">
-                                View Details
+                                View Itinerary
                             </a>
+
                         </div>
 
                     </div>
@@ -263,7 +319,8 @@
                 {% endfor %}
             </div>
 
-            <button class="slide-btn right" onclick="slideRight('domestic')">&#10095;</button>
+            <button class="slide-btn right" onclick="slideRight('domestic')"><i
+                    class="fa-solid fa-angle-right"></i></button>
 
         </div>
     </div>
@@ -274,7 +331,8 @@
     <div id="international-section" class="slider-section">
         <div class="slider-wrapper">
 
-            <button class="slide-btn left" onclick="slideLeft('international')">&#10094;</button>
+            <button class="slide-btn left" onclick="slideLeft('international')"><i
+                    class="fa-solid fa-chevron-left"></i></button>
 
 
             <div id="international" class="package-container">
@@ -294,25 +352,77 @@
 
                     <div class="card-content">
 
-                        <h3 class="package-title">{{ package.title }}</h3>
+                        <div class="title-row">
 
-                        <p class="location">{{ package.location }}</p>
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+
+                        </div>
+
+                        <!-- <p class="location">{{ package.location }}</p> -->
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">
+                                {{ stay }}
+                            </span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
 
                         <div class="features">
-                            ✈ Flights &nbsp;
-                            🏨 Hotels &nbsp;
-                            📸 Sightseeing
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
                         </div>
 
                         <div class="price-section">
 
-                            <div class="price">
-                                ₹{{ package.price }}
-                                <span>per person</span>
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price | intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        ₹{{ package.price | intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
                             </div>
 
                             <a href="{% url 'package_detail' package.id %}" class="details-btn">
-                                View Details
+                                View Itinerary
                             </a>
 
                         </div>
@@ -324,11 +434,16 @@
                 {% endfor %}
             </div>
 
-            <button class="slide-btn right" onclick="slideRight('international')">&#10095;</button>
+            <button class="slide-btn right" onclick="slideRight('international')"><i
+                    class="fa-solid fa-angle-right"></i></button>
 
         </div>
     </div>
 
+
+    <div>
+        <h3>Top Selling in india</h3>
+    </div>
 
 
 

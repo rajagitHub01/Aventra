@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'travel',   
 ]
+
+LANGUAGE_CODE = 'en-in'   # Indian format
+USE_L10N = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

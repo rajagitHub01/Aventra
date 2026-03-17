@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Avg, Count
 from .models import Package, Profile, Review
 from django.contrib import messages
 
@@ -11,6 +12,24 @@ def index(request):
     reviews = Review.objects.all().order_by('-id')[:6]       # latest 6 reviews
     domestic_package = Package.objects.filter(package_type = 'domestic')[:8]
     international_package = Package.objects.filter(package_type = 'international')[:8]
+    for p in domestic_package:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+
+
+    for p in international_package:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+
+    
     return render(request, 'index.html', {
         'packages': packages, 
         'reviews': reviews, 
