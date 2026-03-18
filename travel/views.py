@@ -29,12 +29,53 @@ def index(request):
 
         p.review_count = Review.objects.filter(package=p).count()
 
+    north = Package.objects.filter(region='north', package_type='domestic')
+    west = Package.objects.filter(region='west', package_type='domestic')
+    south = Package.objects.filter(region='south', package_type='domestic')
+    northeast = Package.objects.filter(region='northeast', package_type='domestic')
+
+    for p in north:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+
+    for p in west:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+    
+    for p in south:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+    
+    for p in northeast:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+
     
     return render(request, 'index.html', {
         'packages': packages, 
         'reviews': reviews, 
         'domestic_package': domestic_package, 
-        'international_package':international_package
+        'international_package':international_package,
+        'north': north,
+        'west': west,
+        'south': south,
+        'northeast': northeast,
         })
 
 

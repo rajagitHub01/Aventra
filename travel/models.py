@@ -17,6 +17,12 @@ class Package(models.Model):
         ('domestic', 'Domestic'),
         ('international', 'International')
     ]
+    REGION_CHOICE = [
+        ('north', 'North India'),
+        ('west', 'West India'),
+        ('south', 'South India'),
+        ('northeast', 'North-East India'),
+    ]
     title = models.CharField(max_length = 100)
     location = models.CharField(max_length = 50)
     price = models.IntegerField()
@@ -27,6 +33,7 @@ class Package(models.Model):
     description = models.CharField(max_length = 150)
     image = models.ImageField(upload_to = 'packages/')
     package_type = models.CharField(max_length = 20, choices = PACKAGE_TYPE)
+    region = models.CharField(max_length = 20, choices = REGION_CHOICE, default = 'north')
     created_at = models.DateTimeField(auto_now_add = True)
     def __str__(self):
         return self.title

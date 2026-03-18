@@ -738,11 +738,6 @@ display:grid;
     display: none;
 }
 
-/* .package-card {
-    min-width: 280px;
-    flex-shrink: 0;
-} */
-
 .slide-btn{
 position:absolute;
 top:50%;
@@ -947,4 +942,86 @@ color:#111;
 .per-person{
 font-size:12px;
 color:#777;
+}
+
+/* discver India---------------------------------------------------------------------------------------------------- */
+.discover-section {
+    padding: 60px 80px;  /* left spacing */
+    background: #fff;
+}
+
+.discover-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+/* FULL WIDTH PREMIUM UNDERLINE */
+.discover-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;              /* thickness */
+    background: #e0e0e0;      /* soft gray */
+    border-radius: 3px;
+}
+
+/* Tabs container */
+.discover-tabs {
+    margin-top: 25px;
+    display: flex;
+    gap: 35px;
+}
+
+/* Tab style */
+.tab {
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.tab:hover {
+    color: #c59d5f;
+}
+
+/* Underline animation */
+.tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0%;
+    height: 2px;
+    background: #c59d5f;
+    transition: width 0.3s ease;
+}
+
+/* Hover underline */
+.tab:hover::after {
+    width: 100%;
+}
+
+/* Active tab */
+.tab.active {
+    color: #c59d5f;
+}
+
+.tab.active::after {
+    width: 100%;
+}
+/* ------------------------- */
+.region-section {
+    display: none;
+}
+
+.region-section.active {
+    display: block;
 }
