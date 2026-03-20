@@ -1025,3 +1025,17 @@ color:#777;
 .region-section.active {
     display: block;
 }
+
+/* Trending in India----------------------------------------------------------------------------------------------- */
+
+.trending-section {
+  padding-top: 30px;
+  padding-left:90px;
+  background: #f9f9f9;
+  
+}
+
+.trending-text h2 {
+  font-size: 32px;
+  font-weight: 700;
+}

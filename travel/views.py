@@ -66,6 +66,16 @@ def index(request):
 
         p.review_count = Review.objects.filter(package=p).count()
 
+    trending_india = Package.objects.filter(is_trending = True)[:8]
+
+    for p in trending_india:
+        p.stay_list = p.stay_plan.split("•")
+        p.avg_rating = Review.objects.filter(package=p).aggregate(
+            Avg('rating')
+        )['rating__avg']
+
+        p.review_count = Review.objects.filter(package=p).count()
+        
     
     return render(request, 'index.html', {
         'packages': packages, 
@@ -76,6 +86,7 @@ def index(request):
         'west': west,
         'south': south,
         'northeast': northeast,
+        'trending_india': trending_india,
         })
 
 

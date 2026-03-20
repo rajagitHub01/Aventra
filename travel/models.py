@@ -35,6 +35,7 @@ class Package(models.Model):
     package_type = models.CharField(max_length = 20, choices = PACKAGE_TYPE)
     region = models.CharField(max_length = 20, choices = REGION_CHOICE, default = 'north')
     created_at = models.DateTimeField(auto_now_add = True)
+    is_trending = models.BooleanField(default = False)
     def __str__(self):
         return self.title
 
