@@ -9,7 +9,7 @@
     <title>Aventra | Explore. Experience. Travel.</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=26">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=31">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -124,6 +124,7 @@
 
 
     </script>
+
 </head>
 
 <body>
@@ -457,7 +458,50 @@
 
         </div>
     </div>
+    <!-- ------------------------------------------------------------------------------------------------------------ -->
 
+    <section class="why-aventra">
+
+        <h2 class="section-title">Why Choose Aventra</h2>
+        <p class="section-subtitle">Crafting premium journeys with trust, comfort & unforgettable experiences</p>
+
+        <div class="why-container">
+
+            <div class="why-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3>100% Secure Booking</h3>
+                <p>Trusted partners, verified stays and complete payment security.</p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <h3>Top Rated Experiences</h3>
+                <p>Handpicked tours loved by thousands of happy travelers.</p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+                <h3>Best Price Guarantee</h3>
+                <p>No hidden costs. Premium trips at the best market prices.</p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h3>24/7 Travel Support</h3>
+                <p>Always there for you before, during and after your journey.</p>
+            </div>
+
+        </div>
+
+    </section>
     <!-- dicover India section ----------------------------------------------------------------------------------------->
 
     <section class="discover-section">
@@ -903,7 +947,39 @@
 
         </div>
     </div>
+    <!-- ------------------------------------------------------------------------------------------------------------>
+    <section class="how-band">
 
+        <div class="how-inner">
+            <h2>How It Works</h2>
+
+            <div class="steps">
+
+                <div class="step">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <p>Browse</p>
+                </div>
+
+                <div class="step">
+                    <i class="fa-solid fa-pen"></i>
+                    <p>Customize</p>
+                </div>
+
+                <div class="step">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <p>Book</p>
+                </div>
+
+                <div class="step">
+                    <i class="fa-solid fa-plane"></i>
+                    <p>Travel</p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+    <!-- ------------------------------------------------------------------------------------------------------------- -->
 
     <section class="trending-section">
 
@@ -1022,8 +1098,702 @@
         </div>
 
     </div>
+    <!-- how it works section-------------------------------------------------------------------------------------- -->
+    <section class="assurance-strip">
 
+        <div class="assurance-inner">
 
+            <div class="assure">
+                <i class="fa-solid fa-hotel"></i>
+                <h4>Verified Stays</h4>
+                <p>Carefully selected hotels & trusted partners.</p>
+            </div>
+
+            <div class="assure">
+                <i class="fa-solid fa-calendar-check"></i>
+                <h4>Flexible Booking</h4>
+                <p>Easy changes with flexible travel plans.</p>
+            </div>
+
+            <div class="assure">
+                <i class="fa-solid fa-map"></i>
+                <h4>Curated Experiences</h4>
+                <p>Designed itineraries for best travel moments.</p>
+            </div>
+
+            <div class="assure">
+                <i class="fa-solid fa-handshake-angle"></i>
+                <h4>Full Trip Support</h4>
+                <p>From booking to return, we’re with you.</p>
+            </div>
+
+        </div>
+
+    </section>
+    <!-- international getway------------------------------------------------------------------------------------------>
+    <section class="discover-section">
+        <h2 class="discover-title">🌍 International Getaway</h2>
+
+        <div class="discover-tabs">
+            <span class="tab active" onclick="showRegion('europe')">Europe</span>
+            <span class="tab" onclick="showRegion('southeast_asia')">Asia</span>
+            <span class="tab" onclick="showRegion('middle_east')">Middle East</span>
+            <span class="tab" onclick="showRegion('maldives')">Maldives</span>
+            <span class="tab" onclick="showRegion('usa')">USA</span>
+            <span class="tab" onclick="showRegion('dubai')">Dubai</span>
+        </div>
+    </section>
+
+    <div id="europe-section" class="region-section active">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('europe')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="europe" class="package-container">
+
+                {% for package in europe %}
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('europe')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="southeast_asia-section" class="region-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('southeast_asia')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="asia" class="package-container">
+
+                {% for package in southeast_asia %}
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('southeast_asia')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="middle_east-section" class="region-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('middle_east')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="middle_east" class="package-container">
+
+                {% for package in middle_east %}
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('middle_east')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="maldives-section" class="region-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('maldives')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="maldives" class="package-container">
+
+                {% for package in maldives %}
+
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('maldives')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="usa-section" class="region-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('usa')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="usa" class="package-container">
+
+                {% for package in usa %}
+
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('usa')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div id="dubai-section" class="region-section">
+        <div class="slider-wrapper">
+
+            <button class="slide-btn left" onclick="slideLeft('dubai')">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="dubai" class="package-container">
+
+                {% for package in dubai %}
+
+                <div class="package-card">
+
+                    <div class="card-image">
+                        <img src="{{ package.image.url }}">
+                        <div class="card-tags">
+                            <span class="tag">{{ package.duration }}</span>
+                            <span class="tag blue">Group Tour</span>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="title-row">
+                            <h3 class="package-title">{{ package.title }}</h3>
+
+                            <div class="review-box">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="rating">{{ package.avg_rating }}</span>
+                                <span class="review-count">({{ package.review_count }})</span>
+                            </div>
+                        </div>
+
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i> {{ package.location }}
+                        </p>
+
+                        <div class="stay-route">
+                            <i class="fa-solid fa-route"></i>
+
+                            {% for stay in package.stay_list %}
+                            <span class="route-stop">{{ stay }}</span>
+
+                            {% if not forloop.last %}
+                            <span class="route-arrow">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="features">
+                            <span><i class="fa-solid fa-plane"></i> Flights</span>
+                            <span><i class="fa-solid fa-hotel"></i> Hotels</span>
+                            <span><i class="fa-solid fa-utensils"></i> Meals</span>
+                            <span><i class="fa-solid fa-map-location-dot"></i> Guided Tours</span>
+                            <span><i class="fa-solid fa-camera"></i> Sightseeing</span>
+                        </div>
+
+                        <div class="price-section">
+                            <div class="price-info">
+
+                                <div class="price-top">
+                                    {% if package.original_price %}
+                                    <span class="original-price">
+                                        ₹{{ package.original_price|intcomma }}
+                                    </span>
+                                    {% endif %}
+
+                                    {% if package.discount_percent %}
+                                    <span class="discount-badge">
+                                        {{ package.discount_percent }}% OFF
+                                    </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="price-bottom">
+                                    <span class="offer-price">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i> {{ package.price|intcomma}}
+                                    </span>
+                                    <span class="per-person">/ person</span>
+                                </div>
+
+                            </div>
+
+                            <a href="{% url 'package_detail' package.id %}" class="details-btn">
+                                View Itinerary
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="slide-btn right" onclick="slideRight('dubai')">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+
+        </div>
+    </div>
+    <!-- trust section--------------------------------------------------------------------------------------------->
+    <section class="transparency">
+
+        <div class="transparency-inner">
+
+            <div class="tp-item">
+                <i class="fa-solid fa-receipt"></i>
+                <h4>Transparent Pricing</h4>
+                <p>No surprises. What you see is what you pay.</p>
+            </div>
+
+            <div class="tp-item">
+                <i class="fa-solid fa-eye"></i>
+                <h4>No Hidden Charges</h4>
+                <p>All costs are clearly mentioned upfront.</p>
+            </div>
+
+            <div class="tp-item">
+                <i class="fa-solid fa-rotate-left"></i>
+                <h4>Money Back Policy</h4>
+                <p>Easy refunds with simple and fair policies.</p>
+            </div>
+
+        </div>
+
+    </section>
 
 
 

@@ -75,6 +75,31 @@ def index(request):
         )['rating__avg']
 
         p.review_count = Review.objects.filter(package=p).count()
+
+    europe = prepare_packages(
+    Package.objects.filter(region_international='europe', package_type='international')
+    )
+
+    southeast_asia = prepare_packages(
+        Package.objects.filter(region_international='southeast_asia', package_type='international')
+    )
+
+    middle_east = prepare_packages(
+        Package.objects.filter(region_international='middle_east', package_type='international')
+    )
+
+    maldives = prepare_packages(
+        Package.objects.filter(region_international='maldives', package_type='international')
+    )
+
+    usa = prepare_packages(
+        Package.objects.filter(region_international='usa', package_type='international')
+    )
+
+    dubai = prepare_packages(
+        Package.objects.filter(region_international='dubai', package_type='international')
+    )
+    
         
     
     return render(request, 'index.html', {
@@ -87,6 +112,12 @@ def index(request):
         'south': south,
         'northeast': northeast,
         'trending_india': trending_india,
+        'europe': europe,
+        'southeast_asia': southeast_asia,
+        'middle_east': middle_east,
+        'maldives': maldives,
+        'usa': usa,
+        'dubai': dubai,
         })
 
 
@@ -148,6 +179,16 @@ def logout_view(request):
 def home(request):
     packages = Package.objects.all()
     return render(request, "home.html", {'packages': packages})
+
+def prepare_packages(packages):
+    for p in packages:
+        p.stay_list = p.stay_plan.split("•") if p.stay_plan else []
+
+        reviews = Review.objects.filter(package=p)
+        p.avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        p.review_count = reviews.count()
+
+    return packages
 
 
 
