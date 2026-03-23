@@ -1,26 +1,276 @@
+{% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>{{ package.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/package_detail.css' %}?v=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
+
+<!-- ENQUIRY MODAL -->
+    <div id="enquiryModal" class="modal">
+        <div class="modal-content">
+
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+
+            <h2>Send Enquiry</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="text" name="phone" placeholder="Phone Number" required>
+
+                <textarea name="message" placeholder="Your Message"></textarea>
+
+                <button type="submit">Submit Enquiry</button>
+            </form>
+
+        </div>
+    </div>
+<script>
+    function openModal() {
+        document.getElementById("enquiryModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("enquiryModal").style.display = "none";
+    }
+
+    // close when clicking outside
+    window.onclick = function (event) {
+        let modal = document.getElementById("enquiryModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+
+
+
+
 <body>
+    <!-- header section---------------------------------------------------------------------------------------------- -->
+    <header class="premium-header">
 
-<h1>{{ package.title }}</h1>
+        <!-- LEFT -->
+        <div class="header-left">
+            <a href="/" class="brand">
+                <img src="{% static 'images/favicon.png' %}" alt="Aventra Logo">
+                <span>AVENTRA</span>
+            </a>
+        </div>
 
-<!-- {% if package.image %} -->
-<img src="{{ package.image.url }}" width="500px">
-<!-- {% endif %} -->
+        <!-- CENTER SEARCH -->
+        <div class="search-container">
+            <input type="text" placeholder="Search destinations, tours, experiences">
+            <button class="search-btn">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
 
-<p><strong>Location:</strong> {{ package.location }}</p>
-<p><strong>Price:</strong> ₹{{ package.price }}</p>
-<p><strong>Duration:</strong> {{ package.duration }}</p>
+        <!-- RIGHT -->
+        <div class="header-right">
 
-<p>{{ package.description }}</p>
+            <div class="helpline">
+                <i class="fa-solid fa-phone-volume fa-lg"></i>
+                <div class="helpline-text">
+                    <small>Call Us</small>
+                    <span>+91 12345 67890</span>
+                </div>
+            </div>
 
-<button>Book Now</button>
+            <a href="#" class="agent-link">Travel Agent? Join Us</a>
 
-<br><br>
-<a href="/">Back to Home</a>
+            <div class="auth-links">
+                <a href="/login" class="login-link">Log in</a>
+                <a href="/register" class="signup-btn">Sign Up</a>
+            </div>
+
+        </div>
+
+    </header>
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+
+    <!-- HERO -->
+    <div class="hero">
+        <img src="{{ package.image.url }}">
+        <div class="hero-overlay">
+            <h1>{{ package.title }}</h1>
+            <p>{{ package.location }} • {{ package.duration }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="content">
+
+            <!-- LEFT -->
+            <div class="left">
+
+                <!-- ABOUT -->
+                <div class="card">
+                    <h2>About the Tour</h2>
+                    <p>{{ package.description }}</p>
+                </div>
+
+                <!-- HIGHLIGHTS -->
+                <div class="card">
+                    <h2>Highlights</h2>
+                    <p>{{ package.highlights|linebreaks }}</p>
+                </div>
+
+                <!-- ITINERARY -->
+                <div class="card">
+                    <h2>Day-wise Itinerary</h2>
+
+                    {% for day in itinerary_days %}
+                    <div class="day-box">
+                        <p>{{ day }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- INCLUSIONS -->
+                <div class="card">
+                    <h2>Inclusions</h2>
+                    <p>{{ package.inclusions|linebreaks }}</p>
+                </div>
+
+                <!-- EXCLUSIONS -->
+                <div class="card">
+                    <h2>Exclusions</h2>
+                    <p>{{ package.exclusions|linebreaks }}</p>
+                </div>
+
+                <!-- Confirmation Policy -->
+                <div class="card">
+                    <h2>Confirmation Policy</h2>
+                    <!-- <p>{{ package.exclusions|linebreaks }}</p> -->
+                </div>
+
+                <!-- Refund Policy -->
+                <div class="card">
+                    <h2>Refund Policy</h2>
+                    <!-- <p>{{ package.exclusions|linebreaks }}</p> -->
+                </div>
+
+                <!-- Cancellation Policy -->
+                <div class="card">
+                    <h2>Cancellation Policy</h2>
+                    <!-- <p>{{ package.exclusions|linebreaks }}</p> -->
+                </div>
+
+                <!-- Payment Policy -->
+                <div class="card">
+                    <h2>Payment Policy</h2>
+                    <!-- <p>{{ package.exclusions|linebreaks }}</p> -->
+                </div>
+
+
+                <!-- REVIEWS -->
+                <div class="card">
+                    <h2>Reviews ({{ review_count }})</h2>
+                    <p>⭐ {{ avg_rating|default:"No ratings yet" }}</p>
+
+                    {% for r in reviews %}
+                    <div class="review">
+                        <strong>{{ r.user.username }}</strong>
+                        <p>⭐ {{ r.rating }}</p>
+                        <p>{{ r.comment }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="right">
+
+                <div class="card price-box">
+
+                    {% if package.original_price %}
+                    <p class="old-price">₹{{ package.original_price |intcomma }}</p>
+                    {% endif %}
+
+                    <p class="price">₹{{ package.price |intcomma}}</p>
+
+                    {% if package.discount_percent %}
+                    <p>{{ package.discount_percent }}% OFF</p>
+                    {% endif %}
+
+                    <p>{{ package.duration }}</p>
+
+                    <a href="#" class="btn">Book Now</a>
+                    <a href="#" class="btn" onclick="openModal()">Send Enquiry</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br><br>
+        <a href="/">← Back to Home</a>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ------footer------------------------------------------------------------------------------------------------ -->
+    <footer class="premium-footer">
+
+        <div class="footer-wrapper">
+
+            <h2 class="footer-brand">AVENTRA</h2>
+
+            <p class="footer-desc">
+                Curated travel experiences designed for explorers and dreamers.
+            </p>
+
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="#">Packages</a>
+                <a href="#">Destinations</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+
+            <p class="footer-copy">
+                © 2026 Aventra Travel
+            </p>
+
+        </div>
+
+    </footer>
 
 </body>
+
 </html>

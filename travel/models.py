@@ -38,13 +38,18 @@ class Package(models.Model):
     discount_percent = models.IntegerField(null = True, blank = True)
     duration = models.CharField(max_length = 100)
     stay_plan = models.CharField(max_length = 120, blank = True)
-    description = models.CharField(max_length = 150)
+    description = models.TextField()
     image = models.ImageField(upload_to = 'packages/')
     package_type = models.CharField(max_length = 20, choices = PACKAGE_TYPE)
     region = models.CharField(max_length = 20, choices = REGION_CHOICE, blank=True, null=True)
     region_international = models.CharField(max_length=50, choices=REGION_CHOICES, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add = True)
     is_trending = models.BooleanField(default = False)
+
+    highlights = models.TextField(blank=True)
+    itinerary = models.TextField(blank=True)
+    inclusions = models.TextField(blank=True)
+    exclusions = models.TextField(blank=True)
     def __str__(self):
         return self.title
 

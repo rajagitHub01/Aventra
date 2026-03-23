@@ -124,7 +124,41 @@ def index(request):
 # logical part
 def package_detail(request, id):
     package = get_object_or_404(Package, id=id)
-    return render(request, 'package_detail.html', {'package': package})
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+
+        from django.contrib import messages
+        messages.success(request, "Enquiry submitted successfully!")
+
+    # Stay plan list
+    package.stay_list = package.stay_plan.split("•") if package.stay_plan else []
+
+    # Reviews
+    reviews = Review.objects.filter(package=package).order_by('-id')
+    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    review_count = reviews.count()
+
+    # 🔥 Convert itinerary into day-wise list
+    itinerary_days = []
+    if package.itinerary:
+        days = package.itinerary.split("Day")
+        for d in days:
+            d = d.strip()
+            if d:
+                itinerary_days.append("Day " + d)
+
+    context = {
+        'package': package,
+        'reviews': reviews,
+        'avg_rating': avg_rating,
+        'review_count': review_count,
+        'itinerary_days': itinerary_days,
+    }
+
+    return render(request, 'package_detail.html', context)
 
 def register(request):
     if request.method == "POST":
