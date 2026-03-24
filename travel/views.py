@@ -124,13 +124,14 @@ def index(request):
 # logical part
 def package_detail(request, id):
     package = get_object_or_404(Package, id=id)
+    images = package.images.all()[:6]
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
         phone = request.POST.get("phone")
         message = request.POST.get("message")
+       
 
-        from django.contrib import messages
         messages.success(request, "Enquiry submitted successfully!")
 
     # Stay plan list
@@ -156,6 +157,7 @@ def package_detail(request, id):
         'avg_rating': avg_rating,
         'review_count': review_count,
         'itinerary_days': itinerary_days,
+        'images': images,
     }
 
     return render(request, 'package_detail.html', context)
@@ -214,6 +216,7 @@ def home(request):
     packages = Package.objects.all()
     return render(request, "home.html", {'packages': packages})
 
+# helper function---------------->
 def prepare_packages(packages):
     for p in packages:
         p.stay_list = p.stay_plan.split("•") if p.stay_plan else []

@@ -52,6 +52,13 @@ class Package(models.Model):
     exclusions = models.TextField(blank=True)
     def __str__(self):
         return self.title
+    
+class PackageImage(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='package_gallery/')
+
+    def __str__(self):
+        return self.package.title
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
