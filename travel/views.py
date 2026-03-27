@@ -125,6 +125,11 @@ def index(request):
 def package_detail(request, id):
     package = get_object_or_404(Package, id=id)
     images = package.images.all()[:6]
+    highlights = package.highlights_list.all()[:5]
+    itinerary_days = package.itinerary_days.all().order_by('day_number')
+    inclusions = package.inclusions_list.all()
+    exclusions = package.exclusions_list.all()
+
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
@@ -143,13 +148,9 @@ def package_detail(request, id):
     review_count = reviews.count()
 
     # 🔥 Convert itinerary into day-wise list
-    itinerary_days = []
-    if package.itinerary:
-        days = package.itinerary.split("Day")
-        for d in days:
-            d = d.strip()
-            if d:
-                itinerary_days.append("Day " + d)
+    itinerary_days = package.itinerary_days.all().order_by('day_number')
+
+
 
     context = {
         'package': package,
@@ -158,6 +159,9 @@ def package_detail(request, id):
         'review_count': review_count,
         'itinerary_days': itinerary_days,
         'images': images,
+        'highlights': highlights,
+        'inclusions': inclusions,
+        'exclusions': exclusions,
     }
 
     return render(request, 'package_detail.html', context)

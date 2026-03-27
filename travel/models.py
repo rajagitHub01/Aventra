@@ -45,11 +45,14 @@ class Package(models.Model):
     region_international = models.CharField(max_length=50, choices=REGION_CHOICES, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add = True)
     is_trending = models.BooleanField(default = False)
-
     highlights = models.TextField(blank=True)
+    confirmation_policy = models.TextField(default="Booking confirmation is subject to availability at the time of reservation. A confirmation voucher will be shared within 24 hours of successful payment.In case of non-availability, an alternative option of similar category will be provided.")
+    refund_policy = models.TextField(default="Refunds (if applicable) will be processed within 7–10 working days. Transaction charges or gateway fees may be deducted. No refund will be provided for partially utilized services.")
+    cancellation_policy = models.TextField(default="Free cancellation up to 7 days before travel date. 50% cancellation charges between 3–7 days before travel. No refund for cancellations within 48 hours of departure. No-show bookings are non-refundable.")
+    payment_policy = models.TextField(default="A minimum of 30% advance payment is required to confirm the booking. Full payment must be completed before the start of the trip. Payments can be made via UPI, bank transfer, or online payment gateway.")
+    
+
     itinerary = models.TextField(blank=True)
-    inclusions = models.TextField(blank=True)
-    exclusions = models.TextField(blank=True)
     def __str__(self):
         return self.title
     
@@ -59,6 +62,37 @@ class PackageImage(models.Model):
 
     def __str__(self):
         return self.package.title
+    
+class Highlight(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='highlights_list')
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
+    
+class ItineraryDay(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='itinerary_days')
+    day_number = models.IntegerField()
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"Day {self.day_number} - {self.title}"
+    
+class Inclusion(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name="inclusions_list")
+    text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.text
+
+
+class Exclusion(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name="exclusions_list")
+    text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.text
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
