@@ -9,10 +9,9 @@
     <title>Aventra | Explore. Experience. Travel.</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=33">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=40">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
 
@@ -125,11 +124,14 @@
 
     </script>
 
+
+
+
 </head>
 
 <body>
 
-    <header class="premium-header">
+    <header class="premium-header" id="header">
 
         <!-- LEFT -->
         <div class="header-left">
@@ -140,12 +142,14 @@
         </div>
 
         <!-- CENTER SEARCH -->
-        <div class="search-container">
-            <input type="text" placeholder="Search destinations, tours, experiences">
-            <button class="search-btn">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
+        <form action="{% url 'search_packages' %}" method="GET">
+            <div class="search-container" id="searchBox">
+                <input type="text" name="q" placeholder="Search destinations, tours, experiences">
+                <button type="submit" class="search-btn">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
 
         <!-- RIGHT -->
         <div class="header-right">
@@ -160,9 +164,23 @@
 
             <a href="#" class="agent-link">Travel Agent? Join Us</a>
 
-            <div class="auth-links">
-                <a href="/login" class="login-link">Log in</a>
+            <!-- <div class="auth-links">
+                <a href="javascript:void(0);" onclick="openLogin()" class="login-link">
+                    Log in
+                </a>
                 <a href="/register" class="signup-btn">Sign Up</a>
+
+            </div> -->
+            <div class="auth-links">
+                {% if user.is_authenticated %}
+                <span>Hi, {{ user.first_name }}</span>
+                <a href="/logout">Logout</a>
+                {% else %}
+                <a href="javascript:void(0);" onclick="openLogin()" class="login-link">
+                    Log in
+                </a>
+                <a href="/register" class="signup-btn">Sign Up</a>
+                {% endif %}
             </div>
 
         </div>
@@ -462,46 +480,40 @@
 
     <section class="why-aventra">
 
-        <h2 class="section-title">Why Choose Aventra</h2>
-        <p class="section-subtitle">Crafting premium journeys with trust, comfort & unforgettable experiences</p>
+        <div class="why-left">
+            <h2>Why Choose Aventra</h2>
+            <p>We don’t just plan trips — we design experiences that stay with you forever.</p>
+        </div>
 
-        <div class="why-container">
+        <div class="why-right">
 
-            <div class="why-card">
-                <div class="icon-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h3>100% Secure Booking</h3>
-                <p>Trusted partners, verified stays and complete payment security.</p>
+            <div class="big-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Secure & Trusted</h3>
+                <p>Every booking is protected with verified partners and safe payments.</p>
             </div>
 
-            <div class="why-card">
-                <div class="icon-box">
+            <div class="small-cards">
+                <div class="mini-card">
                     <i class="fa-solid fa-star"></i>
+                    <h4>Top Rated</h4>
                 </div>
-                <h3>Top Rated Experiences</h3>
-                <p>Handpicked tours loved by thousands of happy travelers.</p>
-            </div>
 
-            <div class="why-card">
-                <div class="icon-box">
+                <div class="mini-card">
                     <i class="fa-solid fa-tags"></i>
+                    <h4>Best Pricing</h4>
                 </div>
-                <h3>Best Price Guarantee</h3>
-                <p>No hidden costs. Premium trips at the best market prices.</p>
-            </div>
 
-            <div class="why-card">
-                <div class="icon-box">
+                <div class="mini-card">
                     <i class="fa-solid fa-headset"></i>
+                    <h4>24/7 Support</h4>
                 </div>
-                <h3>24/7 Travel Support</h3>
-                <p>Always there for you before, during and after your journey.</p>
             </div>
 
         </div>
 
     </section>
+
     <!-- dicover India section ----------------------------------------------------------------------------------------->
 
     <section class="discover-section">
@@ -948,37 +960,7 @@
         </div>
     </div>
     <!-- ------------------------------------------------------------------------------------------------------------>
-    <section class="how-band">
 
-        <div class="how-inner">
-            <h2>How It Works</h2>
-
-            <div class="steps">
-
-                <div class="step">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <p>Browse</p>
-                </div>
-
-                <div class="step">
-                    <i class="fa-solid fa-pen"></i>
-                    <p>Customize</p>
-                </div>
-
-                <div class="step">
-                    <i class="fa-solid fa-credit-card"></i>
-                    <p>Book</p>
-                </div>
-
-                <div class="step">
-                    <i class="fa-solid fa-plane"></i>
-                    <p>Travel</p>
-                </div>
-
-            </div>
-        </div>
-
-    </section>
     <!-- ------------------------------------------------------------------------------------------------------------- -->
 
     <section class="trending-section">
@@ -1099,7 +1081,7 @@
 
     </div>
     <!-- how it works section-------------------------------------------------------------------------------------- -->
-    <section class="assurance-strip">
+    <!-- <section class="assurance-strip">
 
         <div class="assurance-inner">
 
@@ -1127,6 +1109,46 @@
                 <p>From booking to return, we’re with you.</p>
             </div>
 
+        </div>
+
+    </section> -->
+
+    <section class="how-band">
+
+        <div class="how-inner">
+            <h2>How It Works</h2>
+
+            <div class="steps">
+
+                <div class="step">
+                    <div class="icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <p>Browse</p>
+                </div>
+
+                <div class="step">
+                    <div class="icon">
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+                    <p>Customize</p>
+                </div>
+
+                <div class="step">
+                    <div class="icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                    <p>Book</p>
+                </div>
+
+                <div class="step">
+                    <div class="icon">
+                        <i class="fa-solid fa-plane"></i>
+                    </div>
+                    <p>Travel</p>
+                </div>
+
+            </div>
         </div>
 
     </section>
@@ -1769,7 +1791,7 @@
         </div>
     </div>
     <!-- trust section--------------------------------------------------------------------------------------------->
-    <section class="transparency">
+    <!-- <section class="transparency">
 
         <div class="transparency-inner">
 
@@ -1793,7 +1815,7 @@
 
         </div>
 
-    </section>
+    </section> -->
 
     <div>
         <h2>North-East</h2>
@@ -1884,6 +1906,57 @@
         </div>
 
     </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="login-box">
+
+            <!-- LEFT IMAGE -->
+            <div class="login-left">
+                <img src="{% static 'images/login-travel.jpg' %}" alt="Travel">
+
+                <div class="overlay-text">
+                    <h2>Explore the World</h2>
+                    <p>Your journey starts here</p>
+                </div>
+            </div>
+
+            <!-- RIGHT FORM -->
+            <div class="login-right">
+
+                <span class="close-btn" onclick="closeLogin()">&times;</span>
+
+                <h2>Welcome Back 👋</h2>
+                <p>Login to continue your journey</p>
+
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="next" value="{{ request.path }}">
+
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+
+                    <button type="submit" class="login-submit">Login</button>
+                </form>
+
+                <p class="switch">
+                    New here? <a href="/register">Create account</a>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function openLogin() {
+            document.getElementById("loginModal").classList.add("active");
+        }
+
+        function closeLogin() {
+            document.getElementById("loginModal").classList.remove("active");
+        }
+    </script>
 </body>
 
 </html>

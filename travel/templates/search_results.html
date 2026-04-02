@@ -1,0 +1,15 @@
+<h2>Search Results for "{{ query }}"</h2>
+
+{% if results %}
+    <div class="results-grid">
+        {% for package in results %}
+            <div class="package-card">
+                <h3>{{ package.title }}</h3>
+                <p>{{ package.location }}</p>
+                <p>₹{{ package.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No packages found 😢</p>
+{% endif %}

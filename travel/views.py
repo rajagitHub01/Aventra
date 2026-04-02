@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Avg, Count
-from .models import Package, Profile, Review
+from .models import Package, Profile, Review, Booking
 from django.contrib import messages
+from django.db.models import Q
+from .models import Package
+
 
 # Create your views here.
 
@@ -129,6 +132,7 @@ def package_detail(request, id):
     itinerary_days = package.itinerary_days.all().order_by('day_number')
     inclusions = package.inclusions_list.all()
     exclusions = package.exclusions_list.all()
+    similar_packages = Package.objects.filter(location=package.location,package_type=package.package_type).exclude(id=package.id)[:4]
 
     if request.method == "POST":
         name = request.POST.get("name")
@@ -139,15 +143,35 @@ def package_detail(request, id):
 
         messages.success(request, "Enquiry submitted successfully!")
 
+        if not request.user.is_authenticated:
+            return redirect(f"/login/?next={request.path}")
+
+        date = request.POST.get("date")
+        persons = int(request.POST.get("persons"))
+
+        total_price = persons * package.price
+
+        Booking.objects.create(
+            user=request.user,
+            package=package,
+            booking_date=date,
+            persons=persons,
+            total_price=total_price
+        )
+
+        messages.success(request, "Booking confirmed successfully!")
+        return redirect('package_detail', id=id)
+
     # Stay plan list
     package.stay_list = package.stay_plan.split("•") if package.stay_plan else []
 
     # Reviews
-    reviews = Review.objects.filter(package=package).order_by('-id')
+    reviews = Review.objects.filter(package=package).order_by('-id')[:3]
     avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    avg_rating = round(avg_rating or 0)
     review_count = reviews.count()
 
-    # 🔥 Convert itinerary into day-wise list
+    #  Convert itinerary into day-wise list
     itinerary_days = package.itinerary_days.all().order_by('day_number')
 
 
@@ -162,6 +186,7 @@ def package_detail(request, id):
         'highlights': highlights,
         'inclusions': inclusions,
         'exclusions': exclusions,
+        'similar_packages': similar_packages,
     }
 
     return render(request, 'package_detail.html', context)
@@ -201,12 +226,18 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
+        next_url = request.POST.get("next")  # 🔥 IMPORTANT
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('home')  
+
+            if next_url:
+                return redirect(next_url)
+
+            return redirect('home')
+
         else:
             return render(request, "login.html", {"error": "Invalid credentials"})
 
@@ -214,11 +245,37 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("home_page")
 
 def home(request):
     packages = Package.objects.all()
     return render(request, "home.html", {'packages': packages})
+
+def search_packages(request):
+    query = request.GET.get('q')
+
+    results = []
+
+    if query:
+        results = Package.objects.filter(
+            Q(title__icontains=query) |
+            Q(location__icontains=query) |
+            Q(description__icontains=query)
+        )
+
+    context = {
+        'query': query,
+        'results': results
+    }
+
+    return render(request, 'search_results.html', context)
+
+
+
+
+
+
+
 
 # helper function---------------->
 def prepare_packages(packages):

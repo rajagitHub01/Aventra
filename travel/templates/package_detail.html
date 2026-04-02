@@ -5,7 +5,7 @@
 
 <head>
     <title>{{ package.title }}</title>
-    <link rel="stylesheet" href="{% static 'css/package_detail.css' %}?v=21">
+    <link rel="stylesheet" href="{% static 'css/package_detail.css' %}?v=32">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -106,6 +106,36 @@
         }
     });
 </script>
+<script>
+    function openBooking() {
+        document.getElementById("bookingModal").style.display = "block";
+    }
+
+    function closeBooking() {
+        document.getElementById("bookingModal").style.display = "none";
+    }
+
+    // LIVE PRICE CALCULATION 🔥
+    const pricePerPerson = {{ package.price }};
+
+    document.addEventListener("input", function (e) {
+        if (e.target.name === "persons") {
+            let total = e.target.value * pricePerPerson;
+
+            document.getElementById("totalPrice").innerText =
+                "Total Price: ₹" + total;
+        }
+    });
+</script>
+<script>
+    function openLogin() {
+        document.getElementById("loginModal").classList.add("active");
+    }
+
+    function closeLogin() {
+        document.getElementById("loginModal").classList.remove("active");
+    }
+</script>
 
 
 <body>
@@ -142,8 +172,13 @@
             <a href="#" class="agent-link">Travel Agent? Join Us</a>
 
             <div class="auth-links">
+                {% if user.is_authenticated %}
+                <span>Hi, {{ user.first_name }}</span>
+                <a href="/logout">Logout</a>
+                {% else %}
                 <a href="/login" class="login-link">Log in</a>
                 <a href="/register" class="signup-btn">Sign Up</a>
+                {% endif %}
             </div>
 
         </div>
@@ -298,22 +333,61 @@
                     </div>
 
 
-                    <!-- REVIEWS -->
-                    <div class="card">
-                        <h2>Reviews ({{ review_count }})</h2>
-                        <p>⭐ {{ avg_rating|default:"No ratings yet" }}</p>
+                    <!-- REVIEWS-------------------------------------------------------------------------------- -->
+                    {% if reviews %}
+                    <div class="review-card">
 
-                        {% for r in reviews %}
-                        <div class="review">
-                            <strong>{{ r.user.username }}</strong>
-                            <p>⭐ {{ r.rating }}</p>
-                            <p>{{ r.comment }}</p>
+                        <!-- HEADER -->
+                        <div class="review-header">
+                            <h2>Guest Reviews</h2>
+
+                            <div class="rating-summary">
+                                <span class="big-rating">
+                                    {{ avg_rating|default:"0"|floatformat:1 }}
+                                </span>
+                                <span class="stars">
+                                    {% for i in "12345" %}
+                                    {% if forloop.counter <= avg_rating %} ★ {% else %} ☆ {% endif %} {% endfor %}
+                                        </span>
+                                        <span class="count">({{ review_count }} reviews)</span>
+                            </div>
                         </div>
-                        {% endfor %}
+
+                        <!-- REVIEWS LIST -->
+                        <div class="review-list">
+
+                            {% for r in reviews %}
+                            <div class="review-item">
+
+                                <!-- TOP ROW -->
+                                <div class="review-top">
+                                    <div class="user">
+                                        <div class="avatar">
+                                            {{ r.user.username|first|upper }}
+                                        </div>
+                                        <span class="name">{{ r.user.username }}</span>
+                                    </div>
+
+                                    <div class="rating">⭐ {{ r.rating }}</div>
+                                </div>
+
+                                <!-- COMMENT -->
+                                <p class="comment">
+                                    {{ r.comment }}
+                                </p>
+
+                            </div>
+                            {% empty %}
+                            <p class="no-review">No reviews yet. Be the first to share your experience!</p>
+                            {% endfor %}
+
+                        </div>
+
                     </div>
+                    {% endif %}
 
                 </div>
-
+                <!-- ------------------------------------right sticky column--------------------------------------- -->
                 <div class="right">
 
                     <div class="card">
@@ -379,8 +453,16 @@
                         <p class="trust">✔ Best Price Guarantee</p>
 
                         <!-- BUTTONS -->
-                        <a href="#" class="main-btn">Get Best Deals</a>
-                        <a href="#" class="outline-btn" onclick="openModal()">Send Enquiry</a>
+
+                        {% if user.is_authenticated %}
+                        <a href="javascript:void(0);" onclick="openBooking()" class="main-btn">Book Now</a>
+                        {% else %}
+                        <a href="javascript:void(0);" onclick="openLogin()" class="main-btn">
+                            Log in to Book
+                        </a>
+                        {% endif %}
+
+                        <a href="javascript:void(0);" class="outline-btn" onclick="openModal()">Send Enquiry</a>
 
                     </div>
 
@@ -391,11 +473,39 @@
         </div>
 
 
-        <h3>similar packages</h3>
+        <!-- similar packages--------------------------------------------------------->
+        {% if similar_packages %}
+        <div class="similar-section">
 
-        <br><br>
-        <a href="/">← Back to Home</a>
+            <h2 class="similar-title">Explore Similar Experiences</h2>
 
+            <div class="similar-grid">
+
+                {% for pkg in similar_packages %}
+                <div class="similar-card">
+
+                    <img src="{{ pkg.image.url }}" alt="{{ pkg.title }}">
+
+                    <div class="card-content">
+                        <h3>{{ pkg.title }}</h3>
+                        <p>{{ pkg.location }}</p>
+
+                        <div class="price_similar">
+                            ₹{{ pkg.price|intcomma }}
+                        </div>
+
+                        <a href="{% url 'package_detail' pkg.id %}" class="view-btn">
+                            View Details →
+                        </a>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+        {% endif %}
     </div>
 
 
@@ -472,6 +582,65 @@
             });
         });
     </script>
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+
+            <span class="close-btn" onclick="closeBooking()">&times;</span>
+
+            <h2>Confirm Your Booking</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="date" name="date" required>
+
+                <input type="number" name="persons" placeholder="Number of Travelers" required>
+
+                <p id="totalPrice" style="font-weight:600; margin-top:10px;"></p>
+
+                <button type="submit">Confirm Booking</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="login-box">
+
+            <!-- LEFT IMAGE -->
+            <div class="login-left">
+                <img src="{% static 'images/login-travel.jpg' %}" alt="Travel">
+            </div>
+
+            <!-- RIGHT FORM -->
+            <div class="login-right">
+
+                <span class="close-btn" onclick="closeLogin()">&times;</span>
+
+                <h2>Welcome Back 👋</h2>
+                <p>Login to continue your journey</p>
+
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="next" value="{{ request.path }}">
+
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+
+                    <button type="submit" class="login-submit">Login</button>
+                </form>
+
+                <p class="switch">
+                    New here? <a href="/register">Create account</a>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>

@@ -95,12 +95,18 @@ class Exclusion(models.Model):
         return self.text
 
 class Booking(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('cancelled', 'Cancelled'),
+    ]
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     package = models.ForeignKey(Package, on_delete = models.CASCADE)
     booking_date = models.DateField()
     persons = models.IntegerField()
     total_price = models.IntegerField()
-    status = models.CharField(max_length = 20, default = 'pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
