@@ -5,7 +5,7 @@
 
 <head>
     <title>{{ package.title }}</title>
-    <link rel="stylesheet" href="{% static 'css/package_detail.css' %}?v=32">
+    <link rel="stylesheet" href="{% static 'css/package_detail.css' %}?v=33">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -21,7 +21,7 @@
 
         <form method="POST">
             {% csrf_token %}
-
+            <input type="hidden" name="form_type" value="enquiry">
             <input type="text" name="name" placeholder="Your Name" required>
             <input type="email" name="email" placeholder="Your Email" required>
             <input type="text" name="phone" placeholder="Phone Number" required>
@@ -590,8 +590,7 @@
 
             <h2>Confirm Your Booking</h2>
 
-            <form method="POST">
-                {% csrf_token %}
+            <form method="GET" action="{% url 'start_booking' package.id %}">
 
                 <input type="date" name="date" required>
 
@@ -599,7 +598,7 @@
 
                 <p id="totalPrice" style="font-weight:600; margin-top:10px;"></p>
 
-                <button type="submit">Confirm Booking</button>
+                <button type="submit">Continue</button>
             </form>
 
         </div>

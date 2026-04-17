@@ -6,6 +6,9 @@ from .models import Package, Profile, Review, Booking
 from django.contrib import messages
 from django.db.models import Q
 from .models import Package
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -135,32 +138,32 @@ def package_detail(request, id):
     similar_packages = Package.objects.filter(location=package.location,package_type=package.package_type).exclude(id=package.id)[:4]
 
     if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-       
 
-        messages.success(request, "Enquiry submitted successfully!")
+        form_type = request.POST.get("form_type")
 
-        if not request.user.is_authenticated:
-            return redirect(f"/login/?next={request.path}")
+        # ---------------- ENQUIRY ----------------
+        if form_type == "enquiry":
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            phone = request.POST.get("phone")
+            message = request.POST.get("message")
 
-        date = request.POST.get("date")
-        persons = int(request.POST.get("persons"))
+            messages.success(request, "Enquiry submitted successfully!")
+            return redirect('package_detail', id=id)
 
-        total_price = persons * package.price
 
-        Booking.objects.create(
-            user=request.user,
-            package=package,
-            booking_date=date,
-            persons=persons,
-            total_price=total_price
-        )
+        # ---------------- BOOKING ----------------
+        elif form_type == "booking":
 
-        messages.success(request, "Booking confirmed successfully!")
-        return redirect('package_detail', id=id)
+            if not request.user.is_authenticated:
+                return redirect(f"/login/?next={request.path}")
+
+            date = request.POST.get("date")
+            persons = request.POST.get("persons")
+
+            return redirect(
+                f"/booking/start/{package.id}/?date={date}&persons={persons}"
+            )
 
     # Stay plan list
     package.stay_list = package.stay_plan.split("•") if package.stay_plan else []
@@ -269,6 +272,117 @@ def search_packages(request):
     }
 
     return render(request, 'search_results.html', context)
+
+def start_booking(request, id):
+    package = get_object_or_404(Package, id=id)
+
+    date = request.GET.get("date")
+    persons = request.GET.get("persons")
+
+    if request.method == "POST":
+
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+
+        return redirect(
+            f"/booking/payment/{id}/?date={date}&persons={persons}&name={name}&email={email}&phone={phone}"
+        )
+
+    total_price = int(persons) * package.price
+
+    context = {
+        "package": package,
+        "date": date,
+        "persons": persons,
+        "total_price": total_price
+    }
+
+    return render(request, "booking.html", context)
+
+def payment_page(request, id):
+    package = get_object_or_404(Package, id=id)
+
+    date = request.GET.get("date")
+    persons = int(request.GET.get("persons"))
+    name = request.GET.get("name")
+    email = request.GET.get("email")
+    phone = request.GET.get("phone")
+
+    total_price = persons * package.price
+
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
+    order = client.order.create({
+        "amount": int(total_price * 100),
+        "currency": "INR",
+        "payment_capture": 1
+    })
+    context = {
+        "package": package,
+        "date": date,
+        "persons": persons,
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "total_price": total_price,
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "order_id": order["id"]
+    }
+
+    return render(request, "payment.html", context)
+@csrf_exempt
+def verify_payment(request):
+
+    if request.method == "POST":
+
+        client = razorpay.Client(
+            auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+        )
+
+        payment_id = request.POST.get("razorpay_payment_id")
+        order_id = request.POST.get("razorpay_order_id")
+        signature = request.POST.get("razorpay_signature")
+
+        data = {
+            'razorpay_payment_id': payment_id,
+            'razorpay_order_id': order_id,
+            'razorpay_signature': signature
+        }
+
+        try:
+            client.utility.verify_payment_signature(data)
+
+            # save booking after payment success
+            package_id = request.POST.get("package_id")
+            persons = int(request.POST.get("persons"))
+            date = request.POST.get("date")
+            total_price = request.POST.get("total_price")
+
+            package = Package.objects.get(id=package_id)
+
+            Booking.objects.create(
+                user=request.user,
+                package=package,
+                booking_date=date,
+                persons=persons,
+                total_price=total_price,
+                status="paid",
+                razorpay_payment_id=payment_id,
+                razorpay_order_id=order_id
+            )
+
+            return redirect("booking_success")
+
+        except:
+            return redirect("payment_failed")
+
+def booking_success(request):
+    return render(request, "booking_success.html")
+
+
 
 
 

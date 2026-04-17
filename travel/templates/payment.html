@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Secure Checkout | Aventra</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #f8f9fb, #eef1f5);
+            color: #111;
+        }
+
+        .wrapper {
+            max-width: 1150px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 16px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .pay-btn:hover {
+            background: #222;
+        }
+
+        .secure {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .package-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            font-size: 14px;
+            color: #555;
+            margin: 7px 0;
+        }
+
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .badge {
+            margin-top: 12px;
+            background: #f2f4f7;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .right {
+            position: sticky;
+            top: 30px;
+            height: fit-content;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="brand">AVENTRA</div>
+    <div class="page-title">Secure Checkout</div>
+
+    <div class="container">
+
+        <!-- LEFT -->
+        <div class="card">
+
+            <div class="section-title">
+                Complete Your Payment
+            </div>
+
+            <div class="desc">
+                Pay securely using UPI, Cards, Netbanking, Wallets and more.
+                You will be redirected to Razorpay secure payment gateway.
+            </div>
+
+            <button id="pay-btn" class="pay-btn">
+                Pay ₹{{ total_price }} Securely
+            </button>
+
+            <div class="secure">
+                🔒 100% Secure Payment • Powered by Razorpay
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="card right">
+
+            <div class="summary-title">Booking Summary</div>
+
+            <div class="package-name">
+                {{ package.title }}
+            </div>
+
+            <div class="info">📍 {{ package.location }}</div>
+            <div class="info">👤 {{ name }}</div>
+            <div class="info">👥 {{ persons }} Travelers</div>
+            <div class="info">📅 {{ date }}</div>
+
+            <div class="divider"></div>
+
+            <div class="price">
+                ₹{{ total_price }}
+            </div>
+
+            <div class="badge">
+                Best Price Guaranteed
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "{{ razorpay_key }}",
+    "amount": "{{ total_price }}00",
+    "currency": "INR",
+    "name": "Aventra Travel",
+    "description": "{{ package.title }}",
+    "order_id": "{{ order_id }}",
+
+    "handler": function (response) {
+
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/verify-payment/";
+
+        form.innerHTML = `
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+            <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+            <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+
+            <input type="hidden" name="package_id" value="{{ package.id }}">
+            <input type="hidden" name="persons" value="{{ persons }}">
+            <input type="hidden" name="date" value="{{ date }}">
+            <input type="hidden" name="total_price" value="{{ total_price }}">
+        `;
+
+        document.body.appendChild(form);
+        form.submit();
+    },
+
+    "prefill": {
+        "name": "{{ name }}",
+        "email": "{{ email }}",
+        "contact": "{{ phone }}"
+    },
+
+    "theme": {
+        "color": "#000"
+    }
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById("pay-btn").onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+};
+</script>
+
+</body>
+</html>

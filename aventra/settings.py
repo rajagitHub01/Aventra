@@ -132,10 +132,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+ 
 # for logo and css of aventra 
 
 # to tell Django to look in a global 'static' folder
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+RAZORPAY_KEY_ID = "rzp_test_SbRF3hx6P3Np74"
+RAZORPAY_KEY_SECRET = "LJEBWi3Jm2SyvhDqOPKtyyh7"

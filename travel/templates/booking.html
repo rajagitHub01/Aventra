@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Your Booking</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f6f7fb;
+            margin:0;
+        }
+
+        .booking-container{
+            max-width:1100px;
+            margin:40px auto;
+            display:grid;
+            grid-template-columns: 2fr 1fr;
+            gap:30px;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .title{
+            font-size:22px;
+            font-weight:600;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin-bottom:15px;
+            border-radius:8px;
+            border:1px solid #ddd;
+        }
+
+        .summary-price{
+            font-size:28px;
+            font-weight:700;
+            color:#000;
+        }
+
+        .continue-btn{
+            width:100%;
+            padding:14px;
+            background:black;
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        .package-title{
+            font-size:18px;
+            font-weight:600;
+        }
+
+        .info{
+            color:#666;
+            margin:6px 0;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="booking-container">
+
+    <!-- LEFT -->
+    <div class="card">
+        <div class="title">Traveller Details</div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="phone" placeholder="Phone" required>
+
+            <button class="continue-btn">
+                Continue to Payment
+            </button>
+
+        </form>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+
+        <div class="package-title">
+            {{ package.title }}
+        </div>
+
+        <div class="info">
+            📍 {{ package.location }}
+        </div>
+
+        <div class="info">
+            👥 {{ persons }} Travelers
+        </div>
+
+        <div class="info">
+            📅 {{ date }}
+        </div>
+
+        <hr>
+
+        <div class="summary-price">
+            ₹{{ total_price }}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

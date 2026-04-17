@@ -106,6 +106,8 @@ class Booking(models.Model):
     persons = models.IntegerField()
     total_price = models.IntegerField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    razorpay_payment_id = models.CharField(max_length=200, blank=True, null=True)
+    razorpay_order_id = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Review(models.Model):

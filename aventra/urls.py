@@ -31,6 +31,10 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("home/", views.home, name="home"),
     path('search/', views.search_packages, name='search_packages'),
+    path('booking/start/<int:id>/', views.start_booking, name='start_booking'),
+    path('booking/payment/<int:id>/', views.payment_page, name='payment_page'),
+    path('verify-payment/', views.verify_payment, name='verify_payment'),
+    path('booking/success/', views.booking_success, name='booking_success'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
